@@ -1,0 +1,17 @@
+program LocacaoWindows;
+
+uses
+  Vcl.Forms,
+  uMernuPrincipal in 'uMernuPrincipal.pas' {FrmMenuPrincipal},
+  uFrmPadrao in 'uFrmPadrao.pas' {FrmPadrao},
+  uFrmClientes in 'uFrmClientes.pas' {FrmClientes};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TFrmMenuPrincipal, FrmMenuPrincipal);
+  Application.CreateForm(TFrmClientes, FrmClientes);
+  Application.Run;
+end.

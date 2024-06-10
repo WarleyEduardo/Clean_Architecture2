@@ -1,0 +1,24 @@
+program LocacaoWindows;
+
+uses
+  Vcl.Forms,
+  uMernuPrincipal in 'uMernuPrincipal.pas' {FrmMenuPrincipal},
+  uFrmPadrao in 'uFrmPadrao.pas' {FrmPadrao},
+  uFrmClientes in 'uFrmClientes.pas' {FrmClientes},
+  uDTOCliente in '..\..\Core\DTO\uDTOCliente.pas',
+  uDTOLocacao in '..\..\Core\DTO\uDTOLocacao.pas',
+  uDTOVeiculo in '..\..\Core\DTO\uDTOVeiculo.pas',
+  uEnums in '..\..\Core\Enums\uEnums.pas',
+  uExceptions in '..\..\Core\Exceptions\uExceptions.pas',
+  uCliente in '..\..\Core\Models\uCliente.pas',
+  uLocacao in '..\..\Core\Models\uLocacao.pas',
+  uVeiculo in '..\..\Core\Models\uVeiculo.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TFrmMenuPrincipal, FrmMenuPrincipal);
+  Application.Run;
+end.

@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<test-results name="C:\Curso\Applications\Teste\locacaoTeste.exe" total="15" errors="0" failures="1" ignored="0" inconclusive="0" not-run="0" skipped="0" invalid="0" date="2024-06-08" time="0.935">
+  <culture-info current-culture="en" current-uiculture="en" />
+  <test-suite type="Assembly" name="locacaoTeste.exe" executed="true" result="Failure" success="False" time="0.935" asserts="0">
+    <results>
+        <test-suite type="Namespace" name="uTesteuseCaseLocacao" executed="true" result="Failure" success="False" time="0.935" asserts="0" >
+          <results>
+              <test-suite type="Fixture" name="TTesteCasoUsoLocacao" executed="True" result="Failure" success="False" time="0.935" >
+                <results>
+                  <test-case name="ValidarClienteInformado" executed="True" result="Success" success="True" time="0.063" asserts="0" />
+                  <test-case name="ValidarVeiculoInformado" executed="True" result="Success" success="True" time="0.045" asserts="0" />
+                  <test-case name="ValidarVeiculoAlugado" executed="True" result="Success" success="True" time="0.074" asserts="0" />
+                  <test-case name="CadastrarLocacao" executed="True" result="Failure" success="False" time="0.092" asserts="0" >
+                    <failure>
+                      <message>
+                        <![CDATA[ Condition is False when True expected. [] ]]>
+                      </message>
+                      <stack-trace>
+                        <![CDATA[  ]]>
+                      </stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case name="DevolverVeiculoLocacao" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                </results>
+              </test-suite>
+          </results>
+        </test-suite>
+        <test-suite type="Namespace" name="uTesteuseCaseVeiculo" executed="true" result="Success" success="True" time="0.338" asserts="0" >
+          <results>
+              <test-suite type="Fixture" name="TTesteCasoUsoVeiculo" executed="True" result="Success" success="True" time="0.338" >
+                <results>
+                  <test-case name="CadastrarVeiculo" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                  <test-case name="AlterarVeiculo" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="ValidarValorVeiculo" executed="True" result="Success" success="True" time="0.061" asserts="0" />
+                  <test-case name="ValidarPlacaVeiculo" executed="True" result="Success" success="True" time="0.080" asserts="0" />
+                </results>
+              </test-suite>
+          </results>
+        </test-suite>
+        <test-suite type="Namespace" name="uTesteuseCaseCliente" executed="true" result="Success" success="True" time="0.168" asserts="0" >
+          <results>
+              <test-suite type="Fixture" name="TTesteCasoUsoCliente" executed="True" result="Success" success="True" time="0.168" >
+                <results>
+                  <test-case name="CadastrarCliente" executed="True" result="Success" success="True" time="0.006" asserts="0" />
+                  <test-case name="AlterarCliente" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="ValidarNomeCliente" executed="True" result="Success" success="True" time="0.054" asserts="0" />
+                  <test-case name="ValidarDocumentoCliente" executed="True" result="Success" success="True" time="0.065" asserts="0" />
+                  <test-case name="ConsultaCliente" executed="True" result="Success" success="True" time="0.004" asserts="0" />
+                  <test-case name="ExcluirCliente" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                </results>
+              </test-suite>
+          </results>
+        </test-suite>
+    </results>
+  </test-suite>
+</test-results>

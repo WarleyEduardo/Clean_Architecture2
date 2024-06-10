@@ -1,0 +1,338 @@
+inherited FrmVeiculos: TFrmVeiculos
+  Caption = ''
+  OnClose = FormClose
+  TextHeight = 15
+  inherited Panel1: TPanel
+    inherited Panel2: TPanel
+      Caption = 'Ve'#237'culos'
+    end
+    inherited Panel4: TPanel
+      inherited pgPrincipal: TPageControl
+        ActivePage = tsCadastro
+        inherited tsconsulta: TTabSheet
+          inherited Panel5: TPanel
+            Height = 177
+            ExplicitHeight = 177
+            object Label14: TLabel [0]
+              Left = 32
+              Top = 11
+              Width = 55
+              Height = 21
+              Caption = 'C'#243'digo'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Label13: TLabel [1]
+              Left = 264
+              Top = 11
+              Width = 47
+              Height = 21
+              Caption = 'Nome'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Label5: TLabel [2]
+              Left = 40
+              Top = 89
+              Width = 41
+              Height = 21
+              Caption = 'Placa'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            inherited btnConsultar: TButton
+              Left = 928
+              Top = 89
+              OnClick = btnConsultarClick
+              ExplicitLeft = 928
+              ExplicitTop = 89
+            end
+            object edtBuscaCodigo: TEdit
+              Left = 32
+              Top = 38
+              Width = 201
+              Height = 29
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
+              TabOrder = 1
+            end
+            object edtBuscaNome: TEdit
+              Left = 264
+              Top = 38
+              Width = 601
+              Height = 29
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
+              TabOrder = 2
+            end
+            object edtBuscaPlaca: TEdit
+              Left = 32
+              Top = 116
+              Width = 833
+              Height = 29
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
+              TabOrder = 3
+            end
+          end
+          inherited Panel6: TPanel
+            Top = 177
+            Height = 399
+            ExplicitTop = 177
+            ExplicitHeight = 399
+            object DBGrid1: TDBGrid
+              Left = 1
+              Top = 1
+              Width = 1094
+              Height = 397
+              Align = alClient
+              DataSource = DataSource1
+              Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+              TabOrder = 0
+              TitleFont.Charset = DEFAULT_CHARSET
+              TitleFont.Color = clWindowText
+              TitleFont.Height = -12
+              TitleFont.Name = 'Segoe UI'
+              TitleFont.Style = []
+              Columns = <
+                item
+                  Expanded = False
+                  FieldName = 'Id'
+                  Visible = True
+                end
+                item
+                  Expanded = False
+                  FieldName = 'Nome'
+                  Visible = True
+                end
+                item
+                  Expanded = False
+                  FieldName = 'Placa'
+                  Visible = True
+                end
+                item
+                  Expanded = False
+                  FieldName = 'Valor'
+                  Visible = True
+                end
+                item
+                  Expanded = False
+                  FieldName = 'Status'
+                  Visible = True
+                end>
+            end
+          end
+          inherited Panel7: TPanel
+            inherited btnExcluir: TButton
+              OnClick = btnExcluirClick
+            end
+            inherited btnOk: TButton
+              OnClick = btnOkClick
+            end
+          end
+        end
+        inherited tsCadastro: TTabSheet
+          inherited Panel8: TPanel
+            object Label1: TLabel
+              Left = 48
+              Top = 32
+              Width = 47
+              Height = 21
+              Caption = 'Nome'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Label12: TLabel
+              Left = 808
+              Top = 32
+              Width = 55
+              Height = 21
+              Caption = 'C'#243'digo'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Label2: TLabel
+              Left = 48
+              Top = 104
+              Width = 41
+              Height = 21
+              Caption = 'Placa'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Label3: TLabel
+              Left = 320
+              Top = 104
+              Width = 40
+              Height = 21
+              Caption = 'Valor'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Label4: TLabel
+              Left = 608
+              Top = 104
+              Width = 47
+              Height = 21
+              Caption = 'Status'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object edtNome: TEdit
+              Left = 48
+              Top = 59
+              Width = 713
+              Height = 29
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
+              TabOrder = 0
+            end
+            object edtCodigo: TEdit
+              Left = 808
+              Top = 59
+              Width = 249
+              Height = 29
+              TabStop = False
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
+              ReadOnly = True
+              TabOrder = 1
+            end
+            object edtPlaca: TEdit
+              Left = 48
+              Top = 131
+              Width = 209
+              Height = 29
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
+              TabOrder = 2
+            end
+            object edtValor: TEdit
+              Left = 320
+              Top = 131
+              Width = 153
+              Height = 29
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
+              TabOrder = 3
+            end
+            object cbbStatus: TComboBox
+              Left = 608
+              Top = 131
+              Width = 145
+              Height = 29
+              Style = csDropDownList
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -16
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              ParentFont = False
+              TabOrder = 4
+              Items.Strings = (
+                'Disponivel'
+                'Alugado')
+            end
+          end
+          inherited Panel9: TPanel
+            inherited btnSalvar: TButton
+              OnClick = btnSalvarClick
+            end
+          end
+        end
+      end
+    end
+  end
+  object TableVeiculos: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 922
+    Top = 392
+    object TableVeiculosId: TIntegerField
+      FieldName = 'Id'
+    end
+    object TableVeiculosNome: TStringField
+      FieldName = 'Nome'
+    end
+    object TableVeiculosPlaca: TStringField
+      FieldName = 'Placa'
+      Size = 7
+    end
+    object TableVeiculosValor: TCurrencyField
+      FieldName = 'Valor'
+    end
+    object TableVeiculosStatus: TStringField
+      FieldName = 'Status'
+    end
+  end
+  object DataSource1: TDataSource
+    DataSet = TableVeiculos
+    Left = 922
+    Top = 480
+  end
+end

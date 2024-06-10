@@ -1,0 +1,14 @@
+<veiculo>
+id:2
+nome:parti
+placa:rg15454
+valor:60
+status:Disponivel
+</veiculo>
+<veiculo>
+id:1
+nome:fusca 57
+placa:acb1234
+valor:70
+status:Alugado
+</veiculo>

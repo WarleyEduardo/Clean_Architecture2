@@ -1,0 +1,665 @@
+unit uRepositoryLocacaoMemory;
+
+interface
+
+uses  uLocacao, uIRepositoryLocacao, System.SysUtils,
+ system.Generics.Collections, uDToLocacao,uUtils, ucliente,uveiculo;
+
+
+ type
+
+ TrepositoryLocacaoMemory = class(TInterfacedObject, IRepositoryLocacao)
+  private
+    FLista: TList<TLocacao>;
+    procedure SetLista(const Value: TList<TLocacao>);
+      procedure SalvarTxt ;
+    procedure LerTxt;
+
+  published
+
+   procedure Cadastrar(Locacao : TLocacao);
+   procedure Alterar(Locacao : TLocacao);
+   procedure Excluir(codigo : integer);
+   function Consultar( dto : DTOLocacao) : Tlist<TLocacao>;
+   property Lista : TList<TLocacao> read FLista write SetLista;
+
+   function RetornarId : Integer;
+
+   constructor create;
+    destructor destroy ;
+
+ end;
+
+ var
+  Repository:  TList<TLocacao>;
+  Id : Integer = 0 ;
+
+implementation
+
+{ TrepositoryLocacaoMemory }
+
+procedure TrepositoryLocacaoMemory.Alterar(Locacao: TLocacao);
+var
+ _Locacao : TLocacao;
+begin
+
+  for _Locacao in repository do
+  begin
+
+     if _Locacao.id = Locacao.id then
+     begin
+
+       repository.Remove(_Locacao);
+
+     end;
+
+  end;
+
+
+  _Locacao                  := TLocacao.Create;
+  _Locacao.Id               := Locacao.Id;
+  _Locacao.CLiente          := Locacao.cliente;
+  _Locacao.Veiculo          := Locacao.Veiculo;
+  _Locacao.VeiculoAtual     := Locacao.Veiculo;
+  _Locacao.DataLocacao      := Locacao.DataLocacao;
+  _Locacao.DataDevolucao    := Locacao.DataDevolucao;
+  _Locacao.Total            := Locacao.Total;
+
+  Repository.Add(_Locacao);
+
+  salvarTxt;
+
+end;
+
+procedure TrepositoryLocacaoMemory.Cadastrar(Locacao: TLocacao);
+var
+_Locacao : TLocacao ;
+begin
+
+
+  _Locacao                 := TLocacao.Create;
+  _Locacao.Id              :=  RetornarId;
+  _Locacao.CLiente         := Locacao.cliente;
+  _Locacao.Veiculo         := Locacao.Veiculo;
+  _Locacao.VeiculoAtual    := Locacao.Veiculo;
+  _Locacao.DataLocacao     := Locacao.DataLocacao;
+  _Locacao.DataDevolucao   := Locacao.DataDevolucao;
+  _Locacao.Total           := Locacao.Total;
+
+
+  Repository.Add(_Locacao);
+
+  salvarTxt;
+end;
+
+function TrepositoryLocacaoMemory.Consultar(dto: DTOLocacao): Tlist<TLocacao>;
+var
+ obj, _Locacao : TLocacao;
+ Filtro, filtrarId, filtrarIdCliente, FiltrarDataLocacao,
+ filtrarDataDevolucao, filtrarStatus  : boolean;
+ continuar , encontrado : boolean;
+begin
+
+  Flista.Clear;
+
+
+  Filtro :=  (dto.id >  0)       or
+             (dto.idcliente > 0)   or
+            (dto.Datalocacao  <> Strtodate('30/12/1899')) or
+            (dto.DataDevolucao  <> Strtodate('30/12/1899')) or
+            (dto.status <> '')     ;
+
+
+  FiltrarId            := (dto.id >  0)  ;
+  FiltrarIdCliente     := (dto.idcliente > 0) ;
+  FiltrarDataLocacao   := (dto.Datalocacao  <> Strtodate('30/12/1899'));
+  filtrarDataDevolucao := (dto.DataDevolucao  <> Strtodate('30/12/1899')) ;
+
+
+  if Repository.Count >  0  then
+  begin
+
+
+    for _Locacao in Repository do
+    begin
+
+      encontrado := false;
+      continuar  := true;
+
+      if Filtro  then
+      begin
+
+
+        if _Locacao.id = dto.id then
+        begin
+
+          Flista.Add( _Locacao);
+
+        end else
+        begin
+
+            if (dto.idcliente) > 0 then
+            begin
+
+              if (dto.idcliente =  _Locacao.cliente.Id)  then
+              begin
+                encontrado := true;
+
+              end else
+              begin
+
+                 if filtrarIdCliente then
+                 begin
+                   continuar := false;
+                 end;
+
+              end;
+
+            end;
+
+            if (dto.Datalocacao  <> Strtodate('30/12/1899')) and continuar then
+            begin
+
+              if dto.Datalocacao = _Locacao.Datalocacao  then
+              begin
+                encontrado := true;
+              end else
+              begin
+
+                if FiltrarDataLocacao   then
+                begin
+                   continuar := false;
+                end;
+
+              end;
+
+            end;
+
+
+            if (dto.DataDevolucao  <> Strtodate('30/12/1899')) and continuar then
+            begin
+
+              if dto.DataDevolucao = _Locacao.DataDevolucao  then
+              begin
+                encontrado := true;
+              end else
+              begin
+
+                if FiltrarDatadevolucao then
+                begin
+                   continuar := false;
+                end;
+
+              end;
+            end;
+
+            if dto.status <> '' then
+            begin
+
+              if (dto.status = ConverterStatusStr(_locacao.Veiculo.Status))  and continuar  then
+              begin
+                  encontrado := true;
+              end else
+              begin
+
+                if filtrarStatus then
+                begin
+                   continuar := false;
+                end;
+
+              end;
+
+            end;
+
+
+           if not continuar then  encontrado := false;
+
+
+           if encontrado  then
+           begin
+
+             _locacao.VeiculoAtual := _locacao.Veiculo;
+             Flista.Add( _Locacao);
+           end;
+
+        end;
+
+      end else
+      begin
+        Flista.Add( _Locacao);
+      end;
+
+
+    end;
+
+  end;
+
+
+   result := FLista;
+
+end;
+
+constructor TrepositoryLocacaoMemory.create;
+begin
+
+   FLista := TList<TLocacao>.create;
+
+  if not assigned(repository) then
+  begin
+     repository := TList<TLocacao>.create;
+  end;
+
+  lerTxt;
+end;
+
+destructor TrepositoryLocacaoMemory.destroy;
+begin
+
+  FLista.Free;
+  repository.Free;
+end;
+
+procedure TrepositoryLocacaoMemory.Excluir(codigo: integer);
+var
+ _Locacao : TLocacao;
+begin
+
+  for _Locacao in repository do
+  begin
+
+     if _Locacao.id = codigo then
+     begin
+
+       repository.Remove(_Locacao);
+
+     end;
+
+  end;
+
+  salvarTxt;
+end;
+
+procedure TrepositoryLocacaoMemory.LerTxt;
+var
+ auxLinha, linha , diretorio , arquivo: string;
+  arq: TextFile;
+
+  erro : boolean;
+
+  locacao : Tlocacao;
+
+  cliente : Tcliente;
+
+  Veiculo : TVeiculo;
+
+  DadosCliente , DadosVeiculo : boolean;
+begin
+
+  diretorio:= ExtractFileDir(GetCurrentDir);
+
+  Arquivo := diretorio  + '\repository\locacoes.txt';
+
+  if FileExists(Arquivo) then
+  begin
+
+    AssignFile(arq, Arquivo);
+
+    Reset(arq);
+
+    erro := (IOResult <> 0) ;
+
+    if not erro then
+    begin
+
+      while (not eof(arq)) do
+      begin
+         readln(arq, linha);
+
+         if linha <> '' then
+         begin
+
+           if Pos('<locacao>',linha) > 0 then
+           begin
+               Locacao := TLocacao.Create;
+               DadosCliente := false;
+               DadosVeiculo := false;
+           end;
+
+          if pos('id:',linha) > 0 then
+          begin
+
+            auxLinha := trim(copy(linha,pos(':',linha) + 1));
+            Locacao.Id :=  strtoInt(auxLinha);
+            if Locacao.Id > id  then id := Locacao.Id;
+          end;
+
+
+           if Pos('<cliente>',linha) > 0 then
+           begin
+               cliente := TCliente.Create;
+               DadosCliente := true;
+           end;
+
+           if DadosCliente  then
+           begin
+
+             if (pos('id:',linha) > 0 ) then
+             begin
+
+               auxLinha := trim(copy(linha,pos(':',linha) + 1));
+               cliente.Id :=  strtoInt(auxLinha);
+               id := cliente.Id;
+             end;
+
+             if pos('nome:',linha) > 0 then
+             begin
+
+               auxLinha := trim(copy(linha,pos(':',linha) + 1));
+               cliente.nome := auxLinha;
+
+             end;
+
+             if pos('documento:',linha) > 0 then
+             begin
+
+               auxLinha := trim(copy(linha,pos(':',linha) + 1));
+               cliente.documento := auxLinha;
+
+             end;
+
+             if pos('cep:',linha) > 0 then
+             begin
+
+               auxLinha := trim(copy(linha,pos(':',linha) + 1));
+               cliente.cep := auxLinha;
+
+             end;
+
+             if pos('logradouro:',linha) > 0 then
+             begin
+
+               auxLinha := trim(copy(linha,pos(':',linha) + 1));
+               cliente.logradouro := auxLinha;
+
+             end;
+
+             if pos('numero:',linha) > 0 then
+             begin
+
+               auxLinha := trim(copy(linha,pos(':',linha) + 1));
+               cliente.numero := auxLinha;
+
+             end;
+
+             if pos('complemento:',linha) > 0 then
+             begin
+
+               auxLinha := trim(copy(linha,pos(':',linha) + 1));
+               cliente.complemento := auxLinha;
+
+             end;
+
+             if pos('bairro:',linha) > 0 then
+             begin
+
+               auxLinha := trim(copy(linha,pos(':',linha) + 1));
+               cliente.bairro := auxLinha;
+
+             end;
+             if pos('cidade:',linha) > 0 then
+             begin
+
+               auxLinha := trim(copy(linha,pos(':',linha) + 1));
+               cliente.cidade := auxLinha;
+
+             end;
+
+             if pos('uf:',linha) > 0 then
+             begin
+
+               auxLinha := trim(copy(linha,pos(':',linha) + 1));
+               cliente.uf := auxLinha;
+
+             end;
+
+             if pos('telefone:',linha) > 0 then
+             begin
+
+               auxLinha := trim(copy(linha,pos(':',linha) + 1));
+               cliente.telefone := auxLinha;
+
+             end;
+
+             locacao.CLiente := Cliente;
+
+
+           end;
+
+           if Pos('<veiculo>',linha) > 0 then
+           begin
+               Veiculo := TVeiculo.Create;
+               DAdosVeiculo := true;
+           end;
+
+           if dadosVeiculo then
+           begin
+             if pos('id:',linha) > 0 then
+             begin
+
+              auxLinha := trim(copy(linha,pos(':',linha) + 1));
+              veiculo.Id :=  strtoInt(auxLinha);
+
+             end;
+
+             if pos('nome:',linha) > 0 then
+             begin
+
+              auxLinha := trim(copy(linha,pos(':',linha) + 1));
+              veiculo.nome := auxLinha;
+
+             end;
+
+             if pos('placa:',linha) > 0 then
+             begin
+
+               auxLinha := trim(copy(linha,pos(':',linha) + 1));
+               veiculo.placa := auxLinha;
+
+             end;
+
+              if pos('valor:',linha) > 0 then
+              begin
+
+                auxLinha := trim(copy(linha,pos(':',linha) + 1));
+                veiculo.valor := strToCurr(auxLinha);
+
+              end;
+
+              if pos('status:',linha) > 0 then
+              begin
+
+                auxLinha := trim(copy(linha,pos(':',linha) + 1));
+                veiculo.status := convertStrStatus(auxLinha);
+
+              end;
+
+
+              Locacao.Veiculo := Veiculo;
+           end;
+
+           if pos('datalocacao:',linha) > 0 then
+           begin
+
+             auxLinha := trim(copy(linha,pos(':',linha) + 1));
+             Locacao.DataLocacao := strToDate(auxLinha);
+
+           end;
+
+           if pos('datadevolucao:',linha) > 0 then
+           begin
+
+             auxLinha := trim(copy(linha,pos(':',linha) + 1));
+             Locacao.Datadevolucao := strToDate(auxLinha);
+
+           end;
+
+           if pos('total:',linha) > 0 then
+           begin
+
+             auxLinha := trim(copy(linha,pos(':',linha) + 1));
+             Locacao.Total := strTocurr(auxLinha);
+
+           end;
+
+          if Pos('</locacao>',linha) > 0 then  Repository.Add(Locacao);
+
+        end;
+
+
+      end;
+
+    end;
+
+   CloseFile(arq);
+
+  end;
+
+end;
+
+function TrepositoryLocacaoMemory.RetornarId: Integer;
+begin
+
+  inc(id);
+   result := id;
+
+end;
+
+procedure TrepositoryLocacaoMemory.salvarTxt;
+var
+ linha , diretorio , arquivo: string;
+  arq: TextFile;
+  _locacao : TLocacao;
+begin
+
+  diretorio:= ExtractFileDir(GetCurrentDir);
+
+  Arquivo := diretorio  + '\repository';
+
+  if not DirectoryExists(Arquivo) then
+  begin
+    ForceDirectories(Arquivo)
+  end;
+
+  Arquivo := Arquivo + '\locacoes.txt';
+
+  if FileExists(Arquivo) then
+  begin
+    DeleteFile(Arquivo);
+  end;
+
+
+  AssignFile(arq, Arquivo);
+  Rewrite(arq);
+
+  if repository.Count > 0  then
+  begin
+
+     for _locacao in repository do
+     begin
+
+       linha := '<locacao>';
+       Writeln(arq,linha);
+
+       linha := 'id:'+ inTToStr(_locacao.id);
+       Writeln(arq,linha);
+
+       linha := '<cliente>';
+       Writeln(arq,linha);
+
+       linha := 'id:'+ inTToStr(_locacao.cliente.id);
+       Writeln(arq,linha);
+
+       linha := 'nome:'+ _locacao.cliente.nome;
+       Writeln(arq,linha);
+
+       linha := 'documento:'+ _locacao.cliente.documento;
+       Writeln(arq,linha);
+
+       linha := 'cep:'+ _locacao.cliente.cep;
+       Writeln(arq,linha);
+
+       linha := 'logradouro:'+ _locacao.cliente.logradouro;
+       Writeln(arq,linha);
+
+       linha := 'numero:'+ _locacao.cliente.numero;
+       Writeln(arq,linha);
+
+       linha := 'complemento:'+ _locacao.cliente.complemento;
+       Writeln(arq,linha);
+
+       linha := 'bairro:'+ _locacao.cliente.bairro;
+       Writeln(arq,linha);
+
+       linha := 'cidade:'+ _locacao.cliente.cidade;
+       Writeln(arq,linha);
+
+       linha := 'uf:'+ _locacao.cliente.uf;
+       Writeln(arq,linha);
+
+       linha := 'telefone:'+ _locacao.cliente.telefone;
+       Writeln(arq,linha);
+
+
+       linha := '</cliente>';
+       Writeln(arq,linha);
+
+       linha := '<veiculo>';
+       Writeln(arq,linha);
+
+       linha := 'id:'+ inTToStr(_locacao.veiculo.id);
+       Writeln(arq,linha);
+
+       linha := 'nome:'+ _locacao.veiculo.nome;
+       Writeln(arq,linha);
+
+       linha := 'placa:'+ _locacao.veiculo.Placa;
+       Writeln(arq,linha);
+
+       linha := 'valor:'+ currtoStr(_locacao.veiculo.Valor);
+       Writeln(arq,linha);
+
+       linha := 'status:'+ ConverterStatusStr(_locacao.veiculo.Status);
+       Writeln(arq,linha);
+
+       linha := '</veiculo>';
+       Writeln(arq,linha);
+
+       linha := 'dataLocacao:'+ DatetoStr(_locacao.DataLocacao);
+       Writeln(arq,linha);
+
+       linha := 'datadevolucao:'+ DatetoStr(_locacao.Datadevolucao);
+       Writeln(arq,linha);
+
+       linha := 'total:'+ currToStr(_locacao.total);
+       Writeln(arq,linha);
+
+
+       linha := '</locacao>';
+       Writeln(arq,linha);
+
+
+     end;
+
+  end;
+
+
+  CloseFile(arq);
+
+end;
+
+procedure TrepositoryLocacaoMemory.SetLista(const Value: TList<TLocacao>);
+begin
+  FLista := Value;
+end;
+
+end.

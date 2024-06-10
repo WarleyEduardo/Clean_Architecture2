@@ -1,0 +1,13 @@
+<cliente>
+id:1
+nome:Warley eduardo
+documento:mg123456
+cep:35100000
+logradouro:rua x
+numero:70
+complemento:casa
+bairro:centro
+cidade:goval
+uf:mg
+telefone:32777777
+</cliente>

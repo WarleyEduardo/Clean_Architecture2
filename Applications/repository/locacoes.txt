@@ -1,0 +1,26 @@
+<locacao>
+id:1
+<cliente>
+id:1
+nome:Warley eduardo
+documento:mg123456
+cep:35100000
+logradouro:rua x
+numero:70
+complemento:casa
+bairro:centro
+cidade:goval
+uf:mg
+telefone:32777777
+</cliente>
+<veiculo>
+id:1
+nome:fusca 57
+placa:acb1234
+valor:70
+status:Alugado
+</veiculo>
+datalocacao:09/06/2024
+datadevolucao:30/12/1899
+total:70
+</locacao>
